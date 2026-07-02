@@ -14,6 +14,11 @@ def analyze_headers(headers):
     results = {}
 
     for header in SECURITY_HEADERS:
-        results[header] = header in headers
+
+        present = header in headers
+        results[header] ={
+            "present": present,
+            "value": headers.get(header, "N/A")
+        }
 
     return results

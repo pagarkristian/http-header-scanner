@@ -32,26 +32,29 @@ def main():
 
     display_banner()
 
-    url = input("\nEnter URL : ").strip ()
+    url = input("\nEnter URL: ").strip ()
     response = scan_website(url)
 
     if response is None:
         return
     print("\n Request completed successfully. \n")
-    print(f"Final Url: {response.url}")
+    print(f"Final URL: {response.url}")
     print(f"Status Code : {response.status_code}")
 
     display_headers(response.headers)
 
     analysis = analyze_headers(response.headers)
 
-    print("\n Security Analyze")
+    print("\n Security Analysis")
     print("-" * 50)
 
-    for header, status in analysis.items():
-        symbol = "✓" if status else "✗"
+    for header, info in analysis.items():
+        symbol = "✓" if info["present"] else "✗"
+
         print(f"[{symbol}] {header}")
 
+        if info["present"]:
+            print(f"    value : {info['value']}")
 
 if __name__== "__main__":
     main()
