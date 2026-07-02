@@ -1,5 +1,6 @@
 from src.scanner import scan_website
 from src.analyzer import analyze_headers
+from src.scoring import calculate_score
 
 def display_banner():
     """
@@ -7,7 +8,7 @@ def display_banner():
     """
 
     print("=" * 50)
-    print("HTTP HEADER SCANNER V1.1")
+    print("HTTP HEADER SCANNER V1.4")
     print("=" * 50)
 
 def display_headers(headers):
@@ -36,9 +37,9 @@ def main():
     response = scan_website(url)
 
     if response is None:
-        return
+        return\
     print("\n Request completed successfully. \n")
-    print(f"Final URL: {response.url}")
+    print(f"Final URL   : {response.url}")
     print(f"Status Code : {response.status_code}")
 
     display_headers(response.headers)
@@ -55,6 +56,14 @@ def main():
 
         if info["present"]:
             print(f"    value : {info['value']}")
+
+
+    score, risk_level = calculate_score(analysis)
+
+    print("\nSecurity Score")
+    print("-" * 50 )
+    print(f"Score         : {score}/100")
+    print(f"Risk Level    : {risk_level}")
 
 if __name__== "__main__":
     main()
