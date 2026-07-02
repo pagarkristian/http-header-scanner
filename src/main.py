@@ -1,6 +1,8 @@
 from src.scanner import scan_website
 from src.analyzer import analyze_headers
 from src.scoring import calculate_score
+from src.constants import HEADER_INFORMATION
+
 
 def display_banner():
     """
@@ -8,8 +10,9 @@ def display_banner():
     """
 
     print("=" * 50)
-    print("HTTP HEADER SCANNER V1.4")
+    print("HTTP Header Scanner v1.5")
     print("=" * 50)
+
 
 def display_headers(headers):
     """
@@ -20,7 +23,7 @@ def display_headers(headers):
     """
 
     print("\nResponse Headers")
-    print("-" * 50 )
+    print("-" * 50)
 
     for key, value in headers.items():
         print(f"{key:<30}: {value}")
@@ -28,17 +31,20 @@ def display_headers(headers):
 
 def main():
     """
-    Run the application
+    Run the application.
     """
 
     display_banner()
 
-    url = input("\nEnter URL: ").strip ()
+    url = input("\nEnter URL: ").strip()
+
     response = scan_website(url)
 
     if response is None:
-        return\
-    print("\n Request completed successfully. \n")
+        return
+
+    print("\nRequest completed successfully.\n")
+
     print(f"Final URL   : {response.url}")
     print(f"Status Code : {response.status_code}")
 
@@ -46,7 +52,7 @@ def main():
 
     analysis = analyze_headers(response.headers)
 
-    print("\n Security Analysis")
+    print("\nSecurity Analysis")
     print("-" * 50)
 
     for header, info in analysis.items():
@@ -55,15 +61,29 @@ def main():
         print(f"[{symbol}] {header}")
 
         if info["present"]:
-            print(f"    value : {info['value']}")
-
+            print(f"    Value : {info['value']}")
 
     score, risk_level = calculate_score(analysis)
 
     print("\nSecurity Score")
-    print("-" * 50 )
-    print(f"Score         : {score}/100")
-    print(f"Risk Level    : {risk_level}")
+    print("-" * 50)
+    print(f"Score      : {score}/100")
+    print(f"Risk Level : {risk_level}")
 
-if __name__== "__main__":
+    print("\nSecurity Recommendations")
+    print("-" * 50)
+
+    for header, info in analysis.items():
+        if not info["present"]:
+
+            details = HEADER_INFORMATION[header]
+
+            print(f"\n[!] {header}")
+            print("Risk:")
+            print(f"    {details['risk']}")
+            print("Recommendation:")
+            print(f"    {details['recommendation']}")
+
+
+if __name__ == "__main__":
     main()
