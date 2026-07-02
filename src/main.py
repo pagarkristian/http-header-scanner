@@ -1,4 +1,5 @@
 from src.scanner import scan_website
+from src.analyzer import analyze_headers
 
 def display_banner():
     """
@@ -41,6 +42,15 @@ def main():
     print(f"Status Code : {response.status_code}")
 
     display_headers(response.headers)
+
+    analysis = analyze_headers(response.headers)
+
+    print("\n Security Analyze")
+    print("-" * 50)
+
+    for header, status in analysis.items():
+        symbol = "✓" if status else "✗"
+        print(f"[{symbol}] {header}")
 
 
 if __name__== "__main__":
