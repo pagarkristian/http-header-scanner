@@ -2,7 +2,7 @@ from src.scanner import scan_website
 from src.analyzer import analyze_headers
 from src.scoring import calculate_score
 from src.constants import HEADER_INFORMATION
-from src.display import display_banner , display_headers , display_security_analysis
+from src.display import display_banner , display_headers , display_security_analysis , display_security_score
 
 def main():
     """
@@ -28,10 +28,8 @@ def main():
     display_security_analysis(analysis)
     score, risk_level = calculate_score(analysis)
 
-    print("\nSecurity Score")
-    print("-" * 50)
-    print(f"Score      : {score}/100")
-    print(f"Risk Level : {risk_level}")
+    score, risk_level = calculate_score(analysis)
+    display_security_score(score, risk_level)
 
     print("\nSecurity Recommendations")
     print("-" * 50)

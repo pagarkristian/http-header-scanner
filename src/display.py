@@ -43,3 +43,17 @@ def display_security_analysis(analysis):
 
         if info["present"]:
             print(f"    Value : {info['value']}")
+
+def display_security_score(score, risk_level):
+    """
+    Display the security score.
+
+    Args:
+        score (int): Security score.
+        risk_level (str): Risk level.
+    """
+
+    print("\nSecurity Score")
+    print("-" * 50)
+    print(f"Score      : {score}/100")
+    print(f"Risk Level : {risk_level}")
