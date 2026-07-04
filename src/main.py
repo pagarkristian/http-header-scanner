@@ -2,7 +2,14 @@ from src.scanner import scan_website
 from src.analyzer import analyze_headers
 from src.scoring import calculate_score
 from src.constants import HEADER_INFORMATION
-from src.display import display_banner , display_headers , display_security_analysis , display_security_score
+from src.display import (
+    display_banner,
+    display_headers,
+    display_security_analysis,
+    display_security_score,
+    display_security_recommendations,
+)
+
 
 def main():
     """
@@ -31,20 +38,23 @@ def main():
     score, risk_level = calculate_score(analysis)
     display_security_score(score, risk_level)
 
-    print("\nSecurity Recommendations")
-    print("-" * 50)
-
-    for header, info in analysis.items():
-        if not info["present"]:
-
-            details = HEADER_INFORMATION[header]
-
-            print(f"\n[!] {header}")
-            print("Risk:")
-            print(f"    {details['risk']}")
-            print("Recommendation:")
-            print(f"    {details['recommendation']}")
-
+    display_security_recommendations(
+        analysis,
+        HEADER_INFORMATION,
+)
 
 if __name__ == "__main__":
     main()
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -57,3 +57,26 @@ def display_security_score(score, risk_level):
     print("-" * 50)
     print(f"Score      : {score}/100")
     print(f"Risk Level : {risk_level}")
+
+def display_security_recommendations(analysis, header_information):
+    """
+    Display security recommendations.
+
+    Args:
+        analysis (dict): Security analysis results.
+        header_information (dict): Security header information.
+    """
+    print("\nSecurity Recommandations")
+    print("-" * 50)
+
+    for header, info in analysis.items():
+
+        if not info["present"]:
+            details = header_information[header]
+
+            print(f"\n[!] {header}")
+            print("Risk:")
+            print(f"    {details['risk']}")
+            print("Recommendation:")
+            print(f"    {details['recommendation']}")
+
