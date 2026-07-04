@@ -37,11 +37,19 @@ def display_security_analysis(analysis):
     print("-" * 50)
 
     for header, info in analysis.items():
-        symbol = "✓" if info["present"] else "✗"
+        if info["status"] == "Present":
+            symbol = "✓"
+
+        elif info["status"] == "Report Only":
+            symbol = "!"
+
+        else:
+            symbol = "✗"
 
         print(f"[{symbol}] {header}")
+        print(f"    Status : {info['status']}")
 
-        if info["present"]:
+        if info["value"] !=  "N/A":
             print(f"    Value : {info['value']}")
 
 def display_security_score(score, risk_level):
@@ -66,7 +74,7 @@ def display_security_recommendations(analysis, header_information):
         analysis (dict): Security analysis results.
         header_information (dict): Security header information.
     """
-    print("\nSecurity Recommandations")
+    print("\nSecurity Recommendations")
     print("-" * 50)
 
     for header, info in analysis.items():

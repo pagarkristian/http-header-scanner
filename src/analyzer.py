@@ -16,9 +16,28 @@ def analyze_headers(headers):
     for header in SECURITY_HEADERS:
 
         present = header in headers
-        results[header] ={
+        status = "Missing"
+        value = "N/A"
+
+        if present:
+            status = "Present"
+            value = headers.get(header)
+
+        elif (
+            header == "Content-Security-Policy"
+            and "Content-Security-Policy-Report-Only" in headers
+
+        ):
+
+            status = "Report Only"
+            value = headers.get("Content-Security-Policy-Report-Only")
+
+        results[header] = {
             "present": present,
-            "value": headers.get(header, "N/A")
-        }
+            "status": status,
+            "value": value,
+
+}
+
 
     return results
