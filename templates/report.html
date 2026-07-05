@@ -1,66 +1,145 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-
     <meta charset="UTF-8">
-
-    <title>HTTP Header Scanner Report</title>
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{TITLE}}</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../static/style.css">
-
 </head>
-
 <body>
 
-<h1>{{TITLE}}</h1>
+    <header class="topbar">
+        <div class="container topbar-inner">
+            <div class="topbar-brand">
+                <span class="brand-dot" aria-hidden="true"></span>
+                <span>HTTP&nbsp;HEADER&nbsp;SCANNER</span>
+            </div>
+            <div class="topbar-meta">{{SCANNER}} &middot; v{{VERSION}}</div>
+        </div>
+    </header>
 
-<hr>
+    <main class="container">
 
-<h2>General Information</h2>
+        <section class="hero">
+            <div class="hero-grade risk-{{RISK_LEVEL_CLASS}}" style="--deg: {{SCORE_DEG}}deg;" aria-hidden="true">
+                <div class="grade-ring">
+                    <div class="grade-inner">
+                        <span class="grade-letter">{{GRADE}}</span>
+                    </div>
+                </div>
+            </div>
 
-<p><strong>Scanner:</strong> {{SCANNER}}</p>
+            <div class="hero-info">
+                <p class="eyebrow">$ scan --target {{TARGET}}</p>
+                <h1 class="hero-target">{{FINAL_URL}}</h1>
 
-<p><strong>Version:</strong> {{VERSION}}</p>
+                <div class="hero-stats">
+                    <div class="hero-stat">
+                        <span class="hero-stat-label">Score</span>
+                        <span class="hero-stat-value">{{SCORE}}<em>/100</em></span>
+                    </div>
+                    <div class="hero-stat">
+                        <span class="hero-stat-label">Risk</span>
+                        <span class="hero-stat-value risk-text risk-{{RISK_LEVEL_CLASS}}">{{RISK_LEVEL}}</span>
+                    </div>
+                    <div class="hero-stat">
+                        <span class="hero-stat-label">Status</span>
+                        <span class="hero-stat-value">{{STATUS_CODE}}</span>
+                    </div>
+                    <div class="hero-stat">
+                        <span class="hero-stat-label">Duration</span>
+                        <span class="hero-stat-value">{{SCAN_DURATION}}</span>
+                    </div>
+                </div>
+            </div>
+        </section>
 
-<p><strong>Timestamp:</strong> {{TIMESTAMP}}</p>
+        <section class="meta-strip" aria-label="Target information">
+            <div class="meta-item">
+                <span class="meta-key">target</span>
+                <span class="meta-val">{{TARGET}}</span>
+            </div>
+            <div class="meta-item">
+                <span class="meta-key">final_url</span>
+                <span class="meta-val">{{FINAL_URL}}</span>
+            </div>
+            <div class="meta-item">
+                <span class="meta-key">scanned_at</span>
+                <span class="meta-val">{{TIMESTAMP}}</span>
+            </div>
+        </section>
 
-<p><strong>Scan Duration:</strong> {{SCAN_DURATION}}</p>
+        <section class="panel" aria-labelledby="summary-title">
+            <div class="panel-head">
+                <h2 id="summary-title">Header Summary</h2>
+                <span class="panel-note">{{PRESENT}} present &middot; {{MISSING}} missing &middot; {{REPORT_ONLY}} report-only</span>
+            </div>
 
-<hr>
+            <div class="summary-bar" role="img" aria-label="Proportion of present, missing, and report-only headers">
+                <span class="summary-seg summary-seg-present" style="width: {{PRESENT_PCT}}%;"></span>
+                <span class="summary-seg summary-seg-missing" style="width: {{MISSING_PCT}}%;"></span>
+                <span class="summary-seg summary-seg-report-only" style="width: {{REPORT_ONLY_PCT}}%;"></span>
+            </div>
 
-<h2>Target</h2>
+            <div class="summary-legend">
+                <div class="legend-item">
+                    <span class="legend-dot legend-dot-present"></span>
+                    Present <strong>{{PRESENT}}</strong>
+                </div>
+                <div class="legend-item">
+                    <span class="legend-dot legend-dot-missing"></span>
+                    Missing <strong>{{MISSING}}</strong>
+                </div>
+                <div class="legend-item">
+                    <span class="legend-dot legend-dot-report-only"></span>
+                    Report Only <strong>{{REPORT_ONLY}}</strong>
+                </div>
+            </div>
+            {{SUMMARY_NOTE}}
+        </section>
 
-<p><strong>Target:</strong> {{TARGET}}</p>
-
-<p><strong>Final URL:</strong> {{FINAL_URL}}</p>
-
-<p><strong>Status Code:</strong> {{STATUS_CODE}}</p>
-
-<hr>
-
-<h2>Security Result</h2>
-
-<p><strong>Score:</strong> {{SCORE}}</p>
-
-<p><strong>Risk Level:</strong> {{RISK_LEVEL}}</p>
-
-<hr>
-
-<h2>Summary</h2>
-
-<ul>
-
-<li>Present : {{PRESENT}}</li>
-
-<li>Missing : {{MISSING}}</li>
-
-<li>Report Only : {{REPORT_ONLY}}</li>
-
-</ul>
-
+        <section class="panel" aria-labelledby="analysis-title">
+            <div class="panel-head">
+                <h2 id="analysis-title">Header Analysis</h2>
+            </div>
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Header</th>
+                            <th>Status</th>
+                            <th>Value</th>
+                        </tr>
+                    </thead>
+                    <tbody>
 {{HEADER_TABLE}}
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <section class="panel" aria-labelledby="recommendations-title">
+            <div class="panel-head">
+                <h2 id="recommendations-title">Recommendations</h2>
+                <span class="panel-note">ordered by impact on score</span>
+            </div>
+            <ol class="rec-list">
+{{RECOMMENDATIONS}}
+            </ol>
+        </section>
+
+    </main>
+
+    <footer class="app-footer">
+        <div class="container footer-inner">
+            <span>{{SCANNER}} v{{VERSION}}</span>
+            <span class="footer-dot">&middot;</span>
+            <span>report generated {{TIMESTAMP}}</span>
+        </div>
+    </footer>
 
 </body>
-
 </html>
