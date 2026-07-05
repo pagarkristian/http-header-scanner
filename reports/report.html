@@ -2,53 +2,140 @@
 <html lang="en">
 
 <head>
+
     <meta charset="UTF-8">
+
     <title>HTTP Header Scanner Report</title>
+
+    <link rel="stylesheet" href="../static/style.css">
+
 </head>
 
 <body>
 
-    <h1>HTTP Header Scanner Report</h1>
+<h1>HTTP Header Scanner Report</h1>
 
-    <hr>
+<hr>
 
-    <h2>General Information</h2>
+<h2>General Information</h2>
 
-    <p><strong>Scanner:</strong> HTTP Header Scanner</p>
+<p><strong>Scanner:</strong> HTTP Header Scanner</p>
 
-    <p><strong>Version:</strong> 1.10</p>
+<p><strong>Version:</strong> 1.10</p>
 
-    <p><strong>Timestamp:</strong> 2026-07-05 23:27:31</p>
+<p><strong>Timestamp:</strong> 2026-07-05 23:44:07</p>
 
-    <p><strong>Scan Duration:</strong> 0.35 seconds</p>
+<p><strong>Scan Duration:</strong> 0.25 seconds</p>
 
-    <hr>
+<hr>
 
-    <h2>Target</h2>
+<h2>Target</h2>
 
-    <p><strong>URL:</strong> https://google.com</p>
+<p><strong>Target:</strong> https://google.com</p>
 
-    <p><strong>Final URL:</strong> https://www.google.com/</p>
+<p><strong>Final URL:</strong> https://www.google.com/</p>
 
-    <p><strong>Status Code:</strong> 200</p>
+<p><strong>Status Code:</strong> 200</p>
 
-    <hr>
+<hr>
 
-    <h2>Security Result</h2>
+<h2>Security Result</h2>
 
-    <p><strong>Score:</strong> 25/100</p>
+<p><strong>Score:</strong> 25/100</p>
 
-    <p><strong>Risk Level:</strong> Critical</p>
+<p><strong>Risk Level:</strong> Critical</p>
 
-    <hr>
+<hr>
 
-    <h2>Summary</h2>
+<h2>Summary</h2>
 
-    <ul>
-        <li>Present : 1</li>
-        <li>Missing : 4</li>
-        <li>Report Only : 1</li>
-    </ul>
+<ul>
+
+<li>Present : 1</li>
+
+<li>Missing : 4</li>
+
+<li>Report Only : 1</li>
+
+</ul>
+
+
+<h2>Security Header Analysis</h2>
+
+<table>
+
+<tr>
+
+<th>Header</th>
+
+<th>Status</th>
+
+<th>Value</th>
+
+</tr>
+
+<tr>
+
+<td>Content-Security-Policy</td>
+
+<td>Report Only</td>
+
+<td>object-src 'none';base-uri 'self';script-src 'nonce-_RgEkwRof2c49YtkPYOJ8g' 'strict-dynamic' 'report-sample' 'unsafe-eval' 'unsafe-inline' https: http:;report-uri https://csp.withgoogle.com/csp/gws/other-hp</td>
+
+</tr>
+
+<tr>
+
+<td>Strict-Transport-Security</td>
+
+<td>Missing</td>
+
+<td>N/A</td>
+
+</tr>
+
+<tr>
+
+<td>X-Frame-Options</td>
+
+<td>Present</td>
+
+<td>SAMEORIGIN</td>
+
+</tr>
+
+<tr>
+
+<td>X-Content-Type-Options</td>
+
+<td>Missing</td>
+
+<td>N/A</td>
+
+</tr>
+
+<tr>
+
+<td>Referrer-Policy</td>
+
+<td>Missing</td>
+
+<td>N/A</td>
+
+</tr>
+
+<tr>
+
+<td>Permissions-Policy</td>
+
+<td>Missing</td>
+
+<td>N/A</td>
+
+</tr>
+
+</table>
+
 
 </body>
 

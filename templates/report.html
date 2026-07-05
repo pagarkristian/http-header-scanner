@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <title>HTTP Header Scanner Report</title>
+
+    <link rel="stylesheet" href="../static/style.css">
+
+</head>
+
+<body>
+
+<h1>{{TITLE}}</h1>
+
+<hr>
+
+<h2>General Information</h2>
+
+<p><strong>Scanner:</strong> {{SCANNER}}</p>
+
+<p><strong>Version:</strong> {{VERSION}}</p>
+
+<p><strong>Timestamp:</strong> {{TIMESTAMP}}</p>
+
+<p><strong>Scan Duration:</strong> {{SCAN_DURATION}}</p>
+
+<hr>
+
+<h2>Target</h2>
+
+<p><strong>Target:</strong> {{TARGET}}</p>
+
+<p><strong>Final URL:</strong> {{FINAL_URL}}</p>
+
+<p><strong>Status Code:</strong> {{STATUS_CODE}}</p>
+
+<hr>
+
+<h2>Security Result</h2>
+
+<p><strong>Score:</strong> {{SCORE}}</p>
+
+<p><strong>Risk Level:</strong> {{RISK_LEVEL}}</p>
+
+<hr>
+
+<h2>Summary</h2>
+
+<ul>
+
+<li>Present : {{PRESENT}}</li>
+
+<li>Missing : {{MISSING}}</li>
+
+<li>Report Only : {{REPORT_ONLY}}</li>
+
+</ul>
+
+{{HEADER_TABLE}}
+
+</body>
+
+</html>

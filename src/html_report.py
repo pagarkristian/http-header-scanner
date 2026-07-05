@@ -13,64 +13,114 @@ def generate_html_report(json_file, html_file):
     with open(json_file, "r", encoding="utf-8") as file:
         report = json.load(file)
 
-    html = f"""<!DOCTYPE html>
-<html lang="en">
+    with open("templates/report.html", "r", encoding="utf-8") as file:
+        html = file.read()
 
-<head>
-    <meta charset="UTF-8">
-    <title>HTTP Header Scanner Report</title>
-</head>
+    html = html.replace(
+        "{{TITLE}}",
+        "HTTP Header Scanner Report",
+    )
 
-<body>
+    html = html.replace(
+        "{{SCANNER}}",
+        report["scanner"],
+    )
 
-    <h1>HTTP Header Scanner Report</h1>
+    html = html.replace(
+        "{{VERSION}}",
+        report["version"],
+    )
 
-    <hr>
+    html = html.replace(
+        "{{TIMESTAMP}}",
+        report["timestamp"],
+    )
 
-    <h2>General Information</h2>
+    html = html.replace(
+        "{{SCAN_DURATION}}",
+        f'{report["scan_duration"]} seconds',
+    )
 
-    <p><strong>Scanner:</strong> {report["scanner"]}</p>
+    html = html.replace(
+        "{{TARGET}}",
+        report["target"],
+    )
 
-    <p><strong>Version:</strong> {report["version"]}</p>
+    html = html.replace(
+        "{{FINAL_URL}}",
+        report["final_url"],
+    )
 
-    <p><strong>Timestamp:</strong> {report["timestamp"]}</p>
+    html = html.replace(
+        "{{STATUS_CODE}}",
+        str(report["status_code"]),
+    )
 
-    <p><strong>Scan Duration:</strong> {report["scan_duration"]} seconds</p>
+    html = html.replace(
+        "{{SCORE}}",
+        f'{report["score"]}/100',
+    )
 
-    <hr>
+    html = html.replace(
+        "{{RISK_LEVEL}}",
+        report["risk_level"],
+    )
 
-    <h2>Target</h2>
+    html = html.replace(
+        "{{PRESENT}}",
+        str(report["summary"]["present"]),
+    )
 
-    <p><strong>URL:</strong> {report["target"]}</p>
+    html = html.replace(
+        "{{MISSING}}",
+        str(report["summary"]["missing"]),
+    )
 
-    <p><strong>Final URL:</strong> {report["final_url"]}</p>
+    html = html.replace(
+        "{{REPORT_ONLY}}",
+        str(report["summary"]["report_only"]),
+    )
 
-    <p><strong>Status Code:</strong> {report["status_code"]}</p>
+    table = """
+<h2>Security Header Analysis</h2>
 
-    <hr>
+<table>
 
-    <h2>Security Result</h2>
+<tr>
 
-    <p><strong>Score:</strong> {report["score"]}/100</p>
+<th>Header</th>
 
-    <p><strong>Risk Level:</strong> {report["risk_level"]}</p>
+<th>Status</th>
 
-    <hr>
+<th>Value</th>
 
-    <h2>Summary</h2>
-
-    <ul>
-        <li>Present : {report["summary"]["present"]}</li>
-        <li>Missing : {report["summary"]["missing"]}</li>
-        <li>Report Only : {report["summary"]["report_only"]}</li>
-    </ul>
-
-</body>
-
-</html>
+</tr>
 """
+
+    for header, info in report["analysis"].items():
+
+        table += f"""
+<tr>
+
+<td>{header}</td>
+
+<td>{info["status"]}</td>
+
+<td>{info["value"]}</td>
+
+</tr>
+"""
+
+    table += """
+</table>
+"""
+
+    html = html.replace(
+        "{{HEADER_TABLE}}",
+        table,
+    )
 
     with open(html_file, "w", encoding="utf-8") as file:
         file.write(html)
 
-    print(f"HTML report saved to: {html_file}")
+    print(f"HTML report saved to {html_file}")
