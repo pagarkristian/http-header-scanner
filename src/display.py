@@ -86,5 +86,12 @@ def display_security_recommendations(analysis, header_information):
             print("Risk:")
             print(f"    {details['risk']}")
             print("Recommendation:")
-            print(f"    {details['recommendation']}")
 
+            if info["status"] == "Missing":
+                print(f"    {details['recommendation']}")
+
+            elif info["status"] == "Report Only":
+                print("    Deploy an enforced Content-Security-Policy header.")
+
+            else:
+                print("    No action required.")

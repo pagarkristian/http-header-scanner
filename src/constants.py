@@ -42,3 +42,12 @@ HEADER_INFORMATION = {
         "recommendation": "Define a Permissions-Policy header."
     }
 }
+
+HEADER_WEIGHTS = {
+    "Content-Security-Policy": 30,
+    "Strict-Transport-Security": 25,
+    "Permissions-Policy": 15,
+    "X-Frame-Options": 10,
+    "X-Content-Type-Options": 10,
+    "Referrer-Policy": 10,
+}

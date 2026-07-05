@@ -1,3 +1,5 @@
+from src.constants import HEADER_WEIGHTS
+
 def calculate_score(analysis):
     """
     Calculate the security score.
@@ -6,26 +8,34 @@ def calculate_score(analysis):
         analysis (dict): Security analysis results.
 
     Returns:
-        tuple: (score, risk_level)
+        tuple:
+            score (int)
+            risk_level (str)
     """
 
-    total_headers = len(analysis)
-    present_headers = 0
+    score = 0
 
-    for info in analysis.values():
-        if info["present"]:
-            present_headers += 1
+    for header, info in analysis.items():
+        weight = HEADER_WEIGHTS[header]
 
-    score = round((present_headers / total_headers) * 100)
+        if info["status"] == "Present":
+            score += weight
 
-    if score >= 80:
+        elif info["status"] == "Report Only":
+            score += weight * 0.5
+
+    score = round(score)
+
+    if score >= 90:
         risk_level = "Low"
 
-    elif score >= 50:
+    elif score >= 70:
         risk_level = "Medium"
 
-    else:
+    elif score >= 40:
         risk_level = "High"
 
-    return score, risk_level
+    else:
+        risk_level = "Critical"
 
+    return score, risk_level
