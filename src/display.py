@@ -95,3 +95,4 @@ def display_security_recommendations(analysis, header_information):
 
             else:
                 print("    No action required.")
+

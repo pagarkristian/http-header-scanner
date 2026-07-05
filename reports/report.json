@@ -1,0 +1,39 @@
+{
+    "target": "https://google.com",
+    "final_url": "https://www.google.com/",
+    "status_code": 200,
+    "score": 25,
+    "risk_level": "Critical",
+    "analysis": {
+        "Content-Security-Policy": {
+            "present": false,
+            "status": "Report Only",
+            "value": "object-src 'none';base-uri 'self';script-src 'nonce-BsPUai6Sir-9FV_K-oIpPg' 'strict-dynamic' 'report-sample' 'unsafe-eval' 'unsafe-inline' https: http:;report-uri https://csp.withgoogle.com/csp/gws/other-hp"
+        },
+        "Strict-Transport-Security": {
+            "present": false,
+            "status": "Missing",
+            "value": "N/A"
+        },
+        "X-Frame-Options": {
+            "present": true,
+            "status": "Present",
+            "value": "SAMEORIGIN"
+        },
+        "X-Content-Type-Options": {
+            "present": false,
+            "status": "Missing",
+            "value": "N/A"
+        },
+        "Referrer-Policy": {
+            "present": false,
+            "status": "Missing",
+            "value": "N/A"
+        },
+        "Permissions-Policy": {
+            "present": false,
+            "status": "Missing",
+            "value": "N/A"
+        }
+    }
+}

@@ -1,7 +1,9 @@
 from src.scanner import scan_website
 from src.analyzer import analyze_headers
 from src.scoring import calculate_score
+from src.exporter import export_to_json
 from src.constants import HEADER_INFORMATION
+
 from src.display import (
     display_banner,
     display_headers,
@@ -31,9 +33,9 @@ def main():
     print(f"Status Code : {response.status_code}")
 
     display_headers(response.headers)
+
     analysis = analyze_headers(response.headers)
     display_security_analysis(analysis)
-    score, risk_level = calculate_score(analysis)
 
     score, risk_level = calculate_score(analysis)
     display_security_score(score, risk_level)
@@ -41,20 +43,18 @@ def main():
     display_security_recommendations(
         analysis,
         HEADER_INFORMATION,
-)
+    )
+
+    export_to_json(
+        "reports/report.json",
+        url,
+        response,
+        analysis,
+        score,
+        risk_level,
+    )
+
 
 if __name__ == "__main__":
     main()
-
-
-
-
-
-
-
-
-
-
-
-
 
