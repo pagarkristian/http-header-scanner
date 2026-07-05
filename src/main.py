@@ -1,9 +1,11 @@
 import time
 
+
 from src.scanner import scan_website
 from src.analyzer import analyze_headers
 from src.scoring import calculate_score
 from src.exporter import export_to_json
+from src.html_report import generate_html_report
 from src.constants import HEADER_INFORMATION
 
 from src.display import (
@@ -62,6 +64,12 @@ def main():
         score,
         risk_level,
         scan_duration,
+    )
+
+    generate_html_report(
+        "reports/report.json",
+        "reports/report.html",
+
     )
 
 
