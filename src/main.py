@@ -1,3 +1,5 @@
+import time
+
 from src.scanner import scan_website
 from src.analyzer import analyze_headers
 from src.scoring import calculate_score
@@ -22,6 +24,8 @@ def main():
 
     url = input("\nEnter URL: ").strip()
 
+    start_time = time.perf_counter()
+
     response = scan_website(url)
 
     if response is None:
@@ -45,6 +49,11 @@ def main():
         HEADER_INFORMATION,
     )
 
+    scan_duration = round(
+        time.perf_counter() - start_time,
+        2
+    )
+
     export_to_json(
         "reports/report.json",
         url,
@@ -52,9 +61,9 @@ def main():
         analysis,
         score,
         risk_level,
+        scan_duration,
     )
 
 
 if __name__ == "__main__":
     main()
-

@@ -8,7 +8,7 @@ def display_banner():
     """
 
     print("=" * 50)
-    print("HTTP Header Scanner v1.5")
+    print("HTTP Header Scanner v3.0")
     print("=" * 50)
 
 def display_headers(headers):
