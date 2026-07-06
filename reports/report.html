@@ -24,12 +24,14 @@
     <main class="container">
 
         <section class="hero">
-            <div class="hero-grade risk-critical" style="--deg: 90.0deg;" aria-hidden="true">
-                <div class="grade-ring">
+            <div class="hero-grade risk-critical" style="--deg: 90.0deg;">
+                <div class="grade-ring" aria-hidden="true">
                     <div class="grade-inner">
                         <span class="grade-letter">F</span>
+                        <span class="grade-percent">25%</span>
                     </div>
                 </div>
+                <span class="grade-caption">Score 25 / 100</span>
             </div>
 
             <div class="hero-info">
@@ -43,7 +45,7 @@
                     </div>
                     <div class="hero-stat">
                         <span class="hero-stat-label">Risk</span>
-                        <span class="hero-stat-value risk-text risk-critical">Critical</span>
+                        <span class="badge-pill risk-critical"><span class="badge-dot"></span>Critical</span>
                     </div>
                     <div class="hero-stat">
                         <span class="hero-stat-label">Status</span>
@@ -51,7 +53,7 @@
                     </div>
                     <div class="hero-stat">
                         <span class="hero-stat-label">Duration</span>
-                        <span class="hero-stat-value">0.29s</span>
+                        <span class="hero-stat-value">0.32s</span>
                     </div>
                 </div>
             </div>
@@ -68,7 +70,7 @@
             </div>
             <div class="meta-item">
                 <span class="meta-key">scanned_at</span>
-                <span class="meta-val">2026-07-06 00:13:50</span>
+                <span class="meta-val">2026-07-06 13:48:03</span>
             </div>
         </section>
 
@@ -76,6 +78,11 @@
             <div class="panel-head">
                 <h2 id="summary-title">Header Summary</h2>
                 <span class="panel-note">1 present &middot; 4 missing &middot; 1 report-only</span>
+            </div>
+
+            <div class="coverage-highlight">
+                <span class="coverage-label">Security Coverage</span>
+                <span class="coverage-value">16.67%</span>
             </div>
 
             <div class="summary-bar" role="img" aria-label="Proportion of present, missing, and report-only headers">
@@ -104,6 +111,7 @@
         <section class="panel" aria-labelledby="analysis-title">
             <div class="panel-head">
                 <h2 id="analysis-title">Header Analysis</h2>
+                <span class="panel-note">click a truncated value to expand</span>
             </div>
             <div class="table-wrapper">
                 <table>
@@ -118,32 +126,38 @@
                         <tr class="row-report-only">
                             <td class="header-name">Content-Security-Policy</td>
                             <td><span class="status-tag status-report-only">Report Only</span></td>
-                            <td class="header-value">object-src 'none';base-uri 'self';script-src 'nonce-gpY2QPeMgl_Pvry0o_YdeQ' 'strict-dynamic' 'report-sample' 'unsafe-eval' 'unsafe-inline' https: http:;report-uri https://csp.withgoogle.com/csp/gws/other-hp</td>
+                            <td class="header-value"><details class="value-details">
+                                <summary class="value-summary" title="object-src &#x27;none&#x27;;base-uri &#x27;self&#x27;;script-src &#x27;nonce-yX663YO6sqtKKtlzExFuEQ&#x27; &#x27;strict-dynamic&#x27; &#x27;report-sample&#x27; &#x27;unsafe-eval&#x27; &#x27;unsafe-inline&#x27; https: http:;report-uri https://csp.withgoogle.com/csp/gws/other-hp">
+                                    <span class="value-text">object-src &#x27;none&#x27;;base-uri &#x27;self&#x27;;script-src &#x27;nonce-yX663YO6sqtK&hellip;</span>
+                                    <span class="value-toggle">Show full value</span>
+                                </summary>
+                                <div class="value-full">object-src &#x27;none&#x27;;base-uri &#x27;self&#x27;;script-src &#x27;nonce-yX663YO6sqtKKtlzExFuEQ&#x27; &#x27;strict-dynamic&#x27; &#x27;report-sample&#x27; &#x27;unsafe-eval&#x27; &#x27;unsafe-inline&#x27; https: http:;report-uri https://csp.withgoogle.com/csp/gws/other-hp</div>
+                            </details></td>
                         </tr>
                         <tr class="row-missing">
                             <td class="header-name">Strict-Transport-Security</td>
                             <td><span class="status-tag status-missing">Missing</span></td>
-                            <td class="header-value">N/A</td>
+                            <td class="header-value"><span class="value-text">N/A</span></td>
                         </tr>
                         <tr class="row-present">
                             <td class="header-name">X-Frame-Options</td>
                             <td><span class="status-tag status-present">Present</span></td>
-                            <td class="header-value">SAMEORIGIN</td>
+                            <td class="header-value"><span class="value-text">SAMEORIGIN</span></td>
                         </tr>
                         <tr class="row-missing">
                             <td class="header-name">X-Content-Type-Options</td>
                             <td><span class="status-tag status-missing">Missing</span></td>
-                            <td class="header-value">N/A</td>
+                            <td class="header-value"><span class="value-text">N/A</span></td>
                         </tr>
                         <tr class="row-missing">
                             <td class="header-name">Referrer-Policy</td>
                             <td><span class="status-tag status-missing">Missing</span></td>
-                            <td class="header-value">N/A</td>
+                            <td class="header-value"><span class="value-text">N/A</span></td>
                         </tr>
                         <tr class="row-missing">
                             <td class="header-name">Permissions-Policy</td>
                             <td><span class="status-tag status-missing">Missing</span></td>
-                            <td class="header-value">N/A</td>
+                            <td class="header-value"><span class="value-text">N/A</span></td>
                         </tr>
 
                     </tbody>
@@ -158,58 +172,78 @@
             </div>
             <ol class="rec-list">
                 <li class="rec-row">
-                    <span class="rec-index">01</span>
+                    <div class="rec-priority">
+                        <span class="rec-index">01</span>
+                        <span class="rec-priority-label">Priority</span>
+                    </div>
                     <div class="rec-body">
                         <div class="rec-heading">
+                            <span class="badge-pill risk-critical"><span class="badge-dot"></span>Critical</span>
                             <span class="rec-header-name">Content-Security-Policy</span>
-                            <span class="rec-impact">impact 30</span>
+                            <span class="rec-impact">+30 pts impact</span>
                         </div>
-                        <p class="rec-risk">Helps prevent Cross-Site Scripting (XSS) attacks.</p>
-                        <p class="rec-fix"><span class="rec-fix-label">Fix</span>Deploy an enforced Content-Security-Policy header.</p>
+                        <p class="rec-risk"><span class="rec-label">Risk</span>Helps prevent Cross-Site Scripting (XSS) attacks.</p>
+                        <p class="rec-fix"><span class="rec-label">Fix</span>Deploy an enforced Content-Security-Policy header.</p>
                     </div>
                 </li>
                 <li class="rec-row">
-                    <span class="rec-index">02</span>
+                    <div class="rec-priority">
+                        <span class="rec-index">02</span>
+                        <span class="rec-priority-label">Priority</span>
+                    </div>
                     <div class="rec-body">
                         <div class="rec-heading">
+                            <span class="badge-pill risk-high"><span class="badge-dot"></span>High</span>
                             <span class="rec-header-name">Strict-Transport-Security</span>
-                            <span class="rec-impact">impact 25</span>
+                            <span class="rec-impact">+25 pts impact</span>
                         </div>
-                        <p class="rec-risk">HTTPS is not enforced for future connections.</p>
-                        <p class="rec-fix"><span class="rec-fix-label">Fix</span>Add: Strict-Transport-Security: max-age=31536000</p>
+                        <p class="rec-risk"><span class="rec-label">Risk</span>HTTPS is not enforced for future connections.</p>
+                        <p class="rec-fix"><span class="rec-label">Fix</span>Add: Strict-Transport-Security: max-age=31536000</p>
                     </div>
                 </li>
                 <li class="rec-row">
-                    <span class="rec-index">03</span>
+                    <div class="rec-priority">
+                        <span class="rec-index">03</span>
+                        <span class="rec-priority-label">Priority</span>
+                    </div>
                     <div class="rec-body">
                         <div class="rec-heading">
+                            <span class="badge-pill risk-medium"><span class="badge-dot"></span>Medium</span>
                             <span class="rec-header-name">Permissions-Policy</span>
-                            <span class="rec-impact">impact 15</span>
+                            <span class="rec-impact">+15 pts impact</span>
                         </div>
-                        <p class="rec-risk">Browser features are not restricted.</p>
-                        <p class="rec-fix"><span class="rec-fix-label">Fix</span>Define a Permissions-Policy header.</p>
+                        <p class="rec-risk"><span class="rec-label">Risk</span>Browser features are not restricted.</p>
+                        <p class="rec-fix"><span class="rec-label">Fix</span>Define a Permissions-Policy header.</p>
                     </div>
                 </li>
                 <li class="rec-row">
-                    <span class="rec-index">04</span>
+                    <div class="rec-priority">
+                        <span class="rec-index">04</span>
+                        <span class="rec-priority-label">Priority</span>
+                    </div>
                     <div class="rec-body">
                         <div class="rec-heading">
+                            <span class="badge-pill risk-low"><span class="badge-dot"></span>Low</span>
                             <span class="rec-header-name">X-Content-Type-Options</span>
-                            <span class="rec-impact">impact 10</span>
+                            <span class="rec-impact">+10 pts impact</span>
                         </div>
-                        <p class="rec-risk">Browsers may MIME-sniff files.</p>
-                        <p class="rec-fix"><span class="rec-fix-label">Fix</span>Set: X-Content-Type-Options: nosniff</p>
+                        <p class="rec-risk"><span class="rec-label">Risk</span>Browsers may MIME-sniff files.</p>
+                        <p class="rec-fix"><span class="rec-label">Fix</span>Set: X-Content-Type-Options: nosniff</p>
                     </div>
                 </li>
                 <li class="rec-row">
-                    <span class="rec-index">05</span>
+                    <div class="rec-priority">
+                        <span class="rec-index">05</span>
+                        <span class="rec-priority-label">Priority</span>
+                    </div>
                     <div class="rec-body">
                         <div class="rec-heading">
+                            <span class="badge-pill risk-low"><span class="badge-dot"></span>Low</span>
                             <span class="rec-header-name">Referrer-Policy</span>
-                            <span class="rec-impact">impact 10</span>
+                            <span class="rec-impact">+10 pts impact</span>
                         </div>
-                        <p class="rec-risk">Sensitive URL information may leak.</p>
-                        <p class="rec-fix"><span class="rec-fix-label">Fix</span>Set an appropriate Referrer-Policy.</p>
+                        <p class="rec-risk"><span class="rec-label">Risk</span>Sensitive URL information may leak.</p>
+                        <p class="rec-fix"><span class="rec-label">Fix</span>Set an appropriate Referrer-Policy.</p>
                     </div>
                 </li>
 
@@ -220,9 +254,18 @@
 
     <footer class="app-footer">
         <div class="container footer-inner">
-            <span>HTTP Header Scanner v1.10</span>
-            <span class="footer-dot">&middot;</span>
-            <span>report generated 2026-07-06 00:13:50</span>
+            <div class="footer-row">
+                <span>Generated by <strong>HTTP Header Scanner</strong> v1.10</span>
+                <span class="footer-dot">&middot;</span>
+                <span>2026-07-06 13:48:03</span>
+            </div>
+            <div class="footer-row footer-row-links">
+                <!-- TODO: point this at your repository -->
+                <a href="#" class="footer-link">GitHub Repository</a>
+                <span class="footer-dot">&middot;</span>
+                <!-- TODO: confirm license before distributing reports -->
+                <span>Released under the MIT License</span>
+            </div>
         </div>
     </footer>
 

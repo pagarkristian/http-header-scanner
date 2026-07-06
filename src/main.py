@@ -9,11 +9,18 @@ from src.html_report import generate_html_report
 from src.constants import HEADER_INFORMATION
 
 from src.display import (
+    console,
     display_banner,
+    scanning_status,
+    saving_status,
+    display_scan_success,
+    display_scan_error,
     display_headers,
+    run_with_progress,
     display_security_analysis,
     display_security_score,
     display_security_recommendations,
+    display_scan_summary,
 )
 
 
@@ -24,26 +31,33 @@ def main():
 
     display_banner()
 
-    url = input("\nEnter URL: ").strip()
+    url = console.input("\n[bold]Enter URL[/]: ").strip()
 
     start_time = time.perf_counter()
 
-    response = scan_website(url)
+    with scanning_status(url):
+        response = scan_website(url)
 
     if response is None:
+        display_scan_error(url)
         return
 
-    print("\nRequest completed successfully.\n")
-
-    print(f"Final URL   : {response.url}")
-    print(f"Status Code : {response.status_code}")
+    display_scan_success(response)
 
     display_headers(response.headers)
 
-    analysis = analyze_headers(response.headers)
+    analysis = run_with_progress(
+        "Analyzing security headers",
+        analyze_headers,
+        response.headers,
+    )
     display_security_analysis(analysis)
 
-    score, risk_level = calculate_score(analysis)
+    score, risk_level = run_with_progress(
+        "Calculating security score",
+        calculate_score,
+        analysis,
+    )
     display_security_score(score, risk_level)
 
     display_security_recommendations(
@@ -56,20 +70,33 @@ def main():
         2
     )
 
-    export_to_json(
-        "reports/report.json",
+    json_path = "reports/report.json"
+    html_path = "reports/report.html"
+
+    with saving_status():
+        export_to_json(
+            json_path,
+            url,
+            response,
+            analysis,
+            score,
+            risk_level,
+            scan_duration,
+        )
+
+        generate_html_report(
+            json_path,
+            html_path,
+        )
+
+    display_scan_summary(
         url,
         response,
-        analysis,
         score,
         risk_level,
         scan_duration,
-    )
-
-    generate_html_report(
-        "reports/report.json",
-        "reports/report.html",
-
+        json_path,
+        html_path,
     )
 
 

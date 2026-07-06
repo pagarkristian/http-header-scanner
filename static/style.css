@@ -23,6 +23,15 @@
     --high: #F0824A;
     --danger: #F1476A;
 
+    /* spacing scale — used by newer components below */
+    --space-xs: 4px;
+    --space-sm: 8px;
+    --space-md: 16px;
+    --space-lg: 24px;
+    --space-xl: 32px;
+
+    --ease: 0.18s ease;
+
     --font-display: "Space Grotesk", sans-serif;
     --font-body: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
     --font-mono: "IBM Plex Mono", "SFMono-Regular", Consolas, monospace;
@@ -167,6 +176,10 @@ main.container {
 .hero-grade {
     --ring-color: var(--violet);
     flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
 }
 
 .hero-grade.risk-low { --ring-color: var(--success); }
@@ -184,6 +197,11 @@ main.container {
     display: flex;
     align-items: center;
     justify-content: center;
+    transition: filter var(--ease);
+}
+
+.hero-grade:hover .grade-ring {
+    filter: brightness(1.08);
 }
 
 .grade-inner {
@@ -192,15 +210,32 @@ main.container {
     border-radius: 50%;
     background-color: var(--surface);
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
+    gap: 2px;
 }
 
 .grade-letter {
     font-family: var(--font-display);
-    font-size: 48px;
+    font-size: 42px;
     font-weight: 700;
+    line-height: 1;
     color: var(--ring-color, var(--violet));
+}
+
+.grade-percent {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--faint);
+}
+
+.grade-caption {
+    font-family: var(--font-mono);
+    font-size: 11.5px;
+    color: var(--faint);
+    letter-spacing: 0.02em;
 }
 
 .hero-info {
@@ -273,10 +308,58 @@ main.container {
     color: var(--faint);
 }
 
-.risk-text.risk-low { color: var(--success); }
-.risk-text.risk-medium { color: var(--warning); }
-.risk-text.risk-high { color: var(--high); }
-.risk-text.risk-critical { color: var(--danger); }
+.badge-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    padding: 5px 12px;
+    border-radius: 999px;
+    font-family: var(--font-mono);
+    font-size: 12.5px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    border: 1px solid transparent;
+    line-height: 1;
+    white-space: nowrap;
+    transition: filter var(--ease);
+}
+
+.badge-pill:hover {
+    filter: brightness(1.1);
+}
+
+.badge-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background-color: currentColor;
+    flex-shrink: 0;
+}
+
+.badge-pill.risk-low {
+    background-color: rgba(53, 211, 153, 0.12);
+    border-color: rgba(53, 211, 153, 0.32);
+    color: var(--success);
+}
+
+.badge-pill.risk-medium {
+    background-color: rgba(240, 180, 41, 0.12);
+    border-color: rgba(240, 180, 41, 0.32);
+    color: var(--warning);
+}
+
+.badge-pill.risk-high {
+    background-color: rgba(240, 130, 74, 0.12);
+    border-color: rgba(240, 130, 74, 0.32);
+    color: var(--high);
+}
+
+.badge-pill.risk-critical {
+    background-color: rgba(241, 71, 106, 0.12);
+    border-color: rgba(241, 71, 106, 0.32);
+    color: var(--danger);
+}
 
 /* ---------- Meta strip ---------- */
 
@@ -327,6 +410,12 @@ main.container {
     border-radius: var(--radius-lg);
     padding: 26px 28px;
     margin-bottom: 24px;
+    transition: border-color var(--ease), box-shadow var(--ease);
+}
+
+.panel:hover {
+    border-color: var(--line);
+    box-shadow: 0 8px 28px rgba(0, 0, 0, 0.18);
 }
 
 .panel-head {
@@ -352,6 +441,28 @@ main.container {
 }
 
 /* ---------- Summary bar ---------- */
+
+.coverage-highlight {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    margin-bottom: 16px;
+}
+
+.coverage-label {
+    font-size: 11.5px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--faint);
+}
+
+.coverage-value {
+    font-family: var(--font-display);
+    font-size: 26px;
+    font-weight: 700;
+    color: var(--paper);
+}
 
 .summary-bar {
     display: flex;
@@ -425,6 +536,7 @@ thead th {
 
 tbody tr {
     border-left: 3px solid transparent;
+    transition: background-color var(--ease);
 }
 
 tbody tr.row-present { border-left-color: var(--success); }
@@ -455,9 +567,85 @@ td.header-name {
 td.header-value {
     font-family: var(--font-mono);
     color: var(--muted);
-    max-width: 440px;
+    max-width: 460px;
     overflow-wrap: anywhere;
     font-size: 12.5px;
+}
+
+/* Long values collapse to one ellipsized line; a native <details> toggle
+   reveals the full value so every row keeps a consistent height. */
+
+.value-text {
+    overflow-wrap: anywhere;
+}
+
+.value-details {
+    max-width: 100%;
+}
+
+.value-summary {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    list-style: none;
+    padding: 2px 0;
+    border-radius: 6px;
+    transition: color var(--ease);
+}
+
+.value-summary::-webkit-details-marker {
+    display: none;
+}
+
+.value-summary .value-text {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 320px;
+}
+
+.value-toggle {
+    flex-shrink: 0;
+    font-family: var(--font-body);
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--violet-soft);
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+}
+
+.value-toggle::before {
+    content: "▸ ";
+}
+
+.value-summary:hover .value-toggle,
+.value-summary:focus-visible .value-toggle {
+    color: var(--paper);
+}
+
+.value-details[open] > .value-summary .value-toggle::before {
+    content: "▾ ";
+}
+
+.value-details[open] > .value-summary .value-toggle {
+    color: var(--faint);
+}
+
+.value-full {
+    margin-top: 8px;
+    padding: 10px 12px;
+    background-color: var(--surface-raised);
+    border: 1px solid var(--line-soft);
+    border-radius: 8px;
+    overflow-wrap: anywhere;
+    color: var(--paper);
+}
+
+@media (max-width: 768px) {
+    .value-summary .value-text {
+        max-width: 55vw;
+    }
 }
 
 .status-tag {
@@ -513,8 +701,14 @@ tr.row-empty {
 .rec-row {
     display: flex;
     gap: 18px;
-    padding: 18px 0;
+    padding: 18px 4px;
     border-bottom: 1px solid var(--line-soft);
+    border-radius: 8px;
+    transition: background-color var(--ease);
+}
+
+.rec-row:hover {
+    background-color: var(--surface-raised);
 }
 
 .rec-list li:last-child {
@@ -522,12 +716,28 @@ tr.row-empty {
     padding-bottom: 4px;
 }
 
-.rec-index {
+.rec-priority {
     flex-shrink: 0;
-    width: 30px;
+    width: 56px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+}
+
+.rec-index {
     font-family: var(--font-display);
-    font-size: 18px;
+    font-size: 20px;
     font-weight: 600;
+    color: var(--faint);
+    line-height: 1.1;
+}
+
+.rec-priority-label {
+    font-size: 9.5px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
     color: var(--faint);
 }
 
@@ -538,11 +748,10 @@ tr.row-empty {
 
 .rec-heading {
     display: flex;
-    align-items: baseline;
-    justify-content: space-between;
+    align-items: center;
     gap: 12px;
     flex-wrap: wrap;
-    margin-bottom: 6px;
+    margin-bottom: 8px;
 }
 
 .rec-header-name {
@@ -556,28 +765,31 @@ tr.row-empty {
     font-family: var(--font-mono);
     font-size: 11px;
     color: var(--violet-soft);
+    margin-left: auto;
 }
 
 .rec-risk {
     margin: 0 0 6px;
-    font-size: 13px;
+    font-size: 13.5px;
+    line-height: 1.6;
     color: var(--muted);
 }
 
 .rec-fix {
     margin: 0;
-    font-size: 13px;
+    font-size: 13.5px;
+    line-height: 1.6;
     color: var(--paper);
 }
 
-.rec-fix-label {
+.rec-label {
     font-family: var(--font-mono);
     font-size: 10.5px;
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 0.06em;
     color: var(--faint);
-    margin-right: 6px;
+    margin-right: 8px;
 }
 
 .rec-empty {
@@ -594,10 +806,33 @@ tr.row-empty {
 }
 
 .footer-inner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
     text-align: center;
     font-family: var(--font-mono);
     font-size: 11.5px;
     color: var(--faint);
+}
+
+.footer-row {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.footer-link {
+    color: var(--violet-soft);
+    text-decoration: none;
+    transition: color var(--ease);
+}
+
+.footer-link:hover,
+.footer-link:focus-visible {
+    color: var(--paper);
+    text-decoration: underline;
 }
 
 .footer-dot {
@@ -648,5 +883,84 @@ tr.row-empty {
 
     .hero-stats {
         gap: 16px 24px;
+    }
+}
+
+/* ==========================================================
+   Print / Save as PDF
+   Forces a clean, light, static layout regardless of the
+   viewer's OS theme — reports are often archived or shared
+   as PDFs and need to stay legible on paper.
+   ========================================================== */
+
+@media print {
+    @page {
+        margin: 1.4cm;
+    }
+
+    :root {
+        --ink: #FFFFFF;
+        --surface: #FFFFFF;
+        --surface-raised: #F6F3FC;
+        --line: #D9D0EC;
+        --line-soft: #E7E1F5;
+        --paper: #17102A;
+        --muted: #4A4361;
+        --faint: #675E85;
+    }
+
+    body {
+        background: none;
+    }
+
+    .topbar,
+    .app-footer {
+        border-color: var(--line-soft);
+    }
+
+    .brand-dot,
+    .eyebrow::after,
+    .hero::before {
+        animation: none !important;
+        display: none !important;
+    }
+
+    .panel,
+    .meta-strip {
+        box-shadow: none !important;
+        border: 1px solid var(--line-soft);
+        break-inside: avoid;
+    }
+
+    .hero {
+        break-inside: avoid;
+    }
+
+    .rec-row,
+    tbody tr {
+        break-inside: avoid;
+    }
+
+    .panel:hover {
+        box-shadow: none;
+    }
+
+    /* Printed reports are a record of the scan — never hide data
+       behind an interactive toggle on paper/PDF. */
+    .value-summary {
+        display: none !important;
+    }
+
+    .value-full {
+        display: block !important;
+        margin-top: 0;
+        padding: 0;
+        border: none;
+        background: none;
+    }
+
+    a {
+        color: var(--paper);
+        text-decoration: underline;
     }
 }

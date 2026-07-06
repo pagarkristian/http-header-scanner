@@ -1,3 +1,4 @@
+import html
 import json
 
 from src.constants import HEADER_INFORMATION, HEADER_WEIGHTS
@@ -16,6 +17,20 @@ GRADE_BY_RISK = {
     "Critical": "F",
 }
 
+# Long header values (e.g. Content-Security-Policy) are collapsed behind a
+# native <details> toggle so the table keeps a consistent row height.
+VALUE_TRUNCATE_LENGTH = 64
+
+
+def _esc(value):
+    """
+    HTML-escape a value pulled from the JSON report before it is dropped
+    into the template. Header values come straight from a remote server,
+    so they are treated as untrusted input.
+    """
+
+    return html.escape(str(value), quote=True)
+
 
 def _percentage(part, total):
     """
@@ -26,6 +41,31 @@ def _percentage(part, total):
         return 0
 
     return round((part / total) * 100, 2)
+
+
+def _severity_from_weight(weight):
+    """
+    Map a header's scoring weight to the same severity vocabulary and
+    color scale already used for the overall Risk Level, so severity
+    means the same thing everywhere in the report.
+
+    Args:
+        weight (int): The header's weight from HEADER_WEIGHTS.
+
+    Returns:
+        tuple[str, str]: (label, css_class)
+    """
+
+    if weight >= 30:
+        return "Critical", "critical"
+
+    if weight >= 20:
+        return "High", "high"
+
+    if weight >= 12:
+        return "Medium", "medium"
+
+    return "Low", "low"
 
 
 def _build_summary_note(total_headers):
@@ -43,6 +83,36 @@ def _build_summary_note(total_headers):
         return '<p class="summary-empty-note">No security headers were detected in the response.</p>'
 
     return ""
+
+
+def _render_value_cell(value):
+    """
+    Render a header value cell. Short values are shown as-is; long values
+    (e.g. Content-Security-Policy) are truncated to a single line with a
+    native, keyboard-accessible <details> toggle to reveal the full value.
+    This keeps every table row the same height regardless of content.
+
+    Args:
+        value (str): Raw header value.
+
+    Returns:
+        str: HTML for the table cell contents.
+    """
+
+    safe_value = _esc(value)
+
+    if len(value) <= VALUE_TRUNCATE_LENGTH:
+        return f'<span class="value-text">{safe_value}</span>'
+
+    preview = _esc(value[:VALUE_TRUNCATE_LENGTH].rstrip()) + "&hellip;"
+
+    return f"""<details class="value-details">
+                                <summary class="value-summary" title="{safe_value}">
+                                    <span class="value-text">{preview}</span>
+                                    <span class="value-toggle">Show full value</span>
+                                </summary>
+                                <div class="value-full">{safe_value}</div>
+                            </details>"""
 
 
 def _build_header_table(analysis):
@@ -70,9 +140,9 @@ def _build_header_table(analysis):
         status_class = STATUS_CLASS.get(info["status"], "missing")
 
         rows += f"""                        <tr class="row-{status_class}">
-                            <td class="header-name">{header}</td>
-                            <td><span class="status-tag status-{status_class}">{info["status"]}</span></td>
-                            <td class="header-value">{info["value"]}</td>
+                            <td class="header-name">{_esc(header)}</td>
+                            <td><span class="status-tag status-{status_class}">{_esc(info["status"])}</span></td>
+                            <td class="header-value">{_render_value_cell(info["value"])}</td>
                         </tr>
 """
 
@@ -82,7 +152,9 @@ def _build_header_table(analysis):
 def _build_recommendations(analysis):
     """
     Build recommendation list items for headers that are not fully present,
-    ordered by their impact on the overall score (highest first).
+    ordered by their impact on the overall score (highest first). Each item
+    surfaces severity, header name, risk description, fix, priority, and
+    impact score.
 
     Args:
         analysis (dict): Security analysis results.
@@ -124,15 +196,21 @@ def _build_recommendations(analysis):
     rows = ""
 
     for index, (weight, header, risk, recommendation) in enumerate(items, start=1):
+        severity_label, severity_class = _severity_from_weight(weight)
+
         rows += f"""                <li class="rec-row">
-                    <span class="rec-index">{index:02d}</span>
+                    <div class="rec-priority">
+                        <span class="rec-index">{index:02d}</span>
+                        <span class="rec-priority-label">Priority</span>
+                    </div>
                     <div class="rec-body">
                         <div class="rec-heading">
-                            <span class="rec-header-name">{header}</span>
-                            <span class="rec-impact">impact {weight}</span>
+                            <span class="badge-pill risk-{severity_class}"><span class="badge-dot"></span>{severity_label}</span>
+                            <span class="rec-header-name">{_esc(header)}</span>
+                            <span class="rec-impact">+{weight} pts impact</span>
                         </div>
-                        <p class="rec-risk">{risk}</p>
-                        <p class="rec-fix"><span class="rec-fix-label">Fix</span>{recommendation}</p>
+                        <p class="rec-risk"><span class="rec-label">Risk</span>{_esc(risk)}</p>
+                        <p class="rec-fix"><span class="rec-label">Fix</span>{_esc(recommendation)}</p>
                     </div>
                 </li>
 """
@@ -156,124 +234,124 @@ def generate_html_report(json_file, html_file):
         report = json.load(file)
 
     with open("templates/report.html", "r", encoding="utf-8") as file:
-        html = file.read()
+        html_out = file.read()
 
     score = report["score"]
     risk_level = report["risk_level"]
     summary = report["summary"]
     total_headers = summary["present"] + summary["missing"] + summary["report_only"]
 
-    html = html.replace(
+    html_out = html_out.replace(
         "{{TITLE}}",
         "HTTP Header Scanner Report",
     )
 
-    html = html.replace(
+    html_out = html_out.replace(
         "{{SCANNER}}",
-        report["scanner"],
+        _esc(report["scanner"]),
     )
 
-    html = html.replace(
+    html_out = html_out.replace(
         "{{VERSION}}",
-        report["version"],
+        _esc(report["version"]),
     )
 
-    html = html.replace(
+    html_out = html_out.replace(
         "{{TIMESTAMP}}",
-        report["timestamp"],
+        _esc(report["timestamp"]),
     )
 
-    html = html.replace(
+    html_out = html_out.replace(
         "{{SCAN_DURATION}}",
         f'{report["scan_duration"]}s',
     )
 
-    html = html.replace(
+    html_out = html_out.replace(
         "{{TARGET}}",
-        report["target"],
+        _esc(report["target"]),
     )
 
-    html = html.replace(
+    html_out = html_out.replace(
         "{{FINAL_URL}}",
-        report["final_url"],
+        _esc(report["final_url"]),
     )
 
-    html = html.replace(
+    html_out = html_out.replace(
         "{{STATUS_CODE}}",
         str(report["status_code"]),
     )
 
-    html = html.replace(
+    html_out = html_out.replace(
         "{{SCORE}}",
         str(score),
     )
 
-    html = html.replace(
+    html_out = html_out.replace(
         "{{SCORE_DEG}}",
         str(round(score * 3.6, 2)),
     )
 
-    html = html.replace(
+    html_out = html_out.replace(
         "{{GRADE}}",
         GRADE_BY_RISK.get(risk_level, "F"),
     )
 
-    html = html.replace(
+    html_out = html_out.replace(
         "{{RISK_LEVEL}}",
-        risk_level,
+        _esc(risk_level),
     )
 
-    html = html.replace(
+    html_out = html_out.replace(
         "{{RISK_LEVEL_CLASS}}",
         risk_level.lower(),
     )
 
-    html = html.replace(
+    html_out = html_out.replace(
         "{{PRESENT}}",
         str(summary["present"]),
     )
 
-    html = html.replace(
+    html_out = html_out.replace(
         "{{MISSING}}",
         str(summary["missing"]),
     )
 
-    html = html.replace(
+    html_out = html_out.replace(
         "{{REPORT_ONLY}}",
         str(summary["report_only"]),
     )
 
-    html = html.replace(
+    html_out = html_out.replace(
         "{{PRESENT_PCT}}",
         str(_percentage(summary["present"], total_headers)),
     )
 
-    html = html.replace(
+    html_out = html_out.replace(
         "{{MISSING_PCT}}",
         str(_percentage(summary["missing"], total_headers)),
     )
 
-    html = html.replace(
+    html_out = html_out.replace(
         "{{REPORT_ONLY_PCT}}",
         str(_percentage(summary["report_only"], total_headers)),
     )
 
-    html = html.replace(
+    html_out = html_out.replace(
         "{{SUMMARY_NOTE}}",
         _build_summary_note(total_headers),
     )
 
-    html = html.replace(
+    html_out = html_out.replace(
         "{{HEADER_TABLE}}",
         _build_header_table(report["analysis"]),
     )
 
-    html = html.replace(
+    html_out = html_out.replace(
         "{{RECOMMENDATIONS}}",
         _build_recommendations(report["analysis"]),
     )
 
     with open(html_file, "w", encoding="utf-8") as file:
-        file.write(html)
+        file.write(html_out)
 
     print(f"HTML report saved to {html_file}")

@@ -1,8 +1,8 @@
 {
     "scanner": "HTTP Header Scanner",
     "version": "1.10",
-    "timestamp": "2026-07-06 00:13:50",
-    "scan_duration": 0.29,
+    "timestamp": "2026-07-06 13:48:03",
+    "scan_duration": 0.32,
     "target": "https://google.com",
     "final_url": "https://www.google.com/",
     "status_code": 200,
@@ -17,7 +17,7 @@
         "Content-Security-Policy": {
             "present": false,
             "status": "Report Only",
-            "value": "object-src 'none';base-uri 'self';script-src 'nonce-gpY2QPeMgl_Pvry0o_YdeQ' 'strict-dynamic' 'report-sample' 'unsafe-eval' 'unsafe-inline' https: http:;report-uri https://csp.withgoogle.com/csp/gws/other-hp"
+            "value": "object-src 'none';base-uri 'self';script-src 'nonce-yX663YO6sqtKKtlzExFuEQ' 'strict-dynamic' 'report-sample' 'unsafe-eval' 'unsafe-inline' https: http:;report-uri https://csp.withgoogle.com/csp/gws/other-hp"
         },
         "Strict-Transport-Security": {
             "present": false,
