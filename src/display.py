@@ -467,8 +467,8 @@ def display_scan_summary(url, response, score, risk_level, scan_duration, json_p
     grid.add_row("Score", f"[bold {color}]{score}/100[/]")
     grid.add_row("Risk Level", f"[bold {color}]{risk_level}[/]")
     grid.add_row("Duration", f"{scan_duration}s")
-    grid.add_row("JSON Report", json_path)
-    grid.add_row("HTML Report", html_path)
+    grid.add_row("JSON Report", str(json_path))
+    grid.add_row("HTML Report", str(html_path))
 
     console.print()
     console.print(

@@ -8,6 +8,11 @@ from src.exporter import export_to_json
 from src.html_report import generate_html_report
 from src.constants import HEADER_INFORMATION
 
+from src.utils import (
+    load_targets,
+    create_report_directory,
+)
+
 from src.display import (
     console,
     display_banner,
@@ -23,6 +28,7 @@ from src.display import (
     display_scan_summary,
 )
 
+
 def parse_arguments():
     """
     Parse command-line arguments.
@@ -30,37 +36,38 @@ def parse_arguments():
 
     parser = argparse.ArgumentParser(
         prog="http-header-scanner",
-        description="Profesional HTTP Security Header Scanner"
+        description="Profesional HTTP Security Header Scanner",
     )
 
     parser.add_argument(
         "url",
-        nargs= "?",
+        nargs="?",
         help="Target Url To Scan"
     )
 
     parser.add_argument(
-    "--version",
-    action="version",
-    version="HTTP Header Scanner v3.0",
-)
+        "--version",
+        action="version",
+        version="HTTP Header Scanner v3.0",
+    )
+
+    parser.add_argument(
+        "-f",
+        "--file",
+        metavar="FILE",
+        help="Read target URLs from a text file",
+    )
 
     return parser.parse_args()
 
-def main():
+
+def scan_target(url):
     """
-    Run the application.
+    Scan a single target and generate reports.
+
+    Args:
+        url (str): Target URL.
     """
-
-    display_banner()
-
-    args = parse_arguments()
-
-    if args.url:
-        url = args.url
-    else:
-        url = console.input("\n[bold]Enter URL[/]: ").strip()
-
     start_time = time.perf_counter()
 
     with scanning_status(url):
@@ -95,11 +102,13 @@ def main():
 
     scan_duration = round(
         time.perf_counter() - start_time,
-        2
+        2,
     )
 
-    json_path = "reports/report.json"
-    html_path = "reports/report.html"
+    report_dir = create_report_directory(url)
+
+    json_path = report_dir / "report.json"
+    html_path = report_dir / "report.html"
 
     with saving_status():
         export_to_json(
@@ -128,5 +137,32 @@ def main():
     )
 
 
+def main():
+    """
+    Run the application.
+    """
+
+    display_banner()
+
+    args = parse_arguments()
+
+    if args.file:
+        targets = load_targets(args.file)
+
+        console.print(f"\nLoaded {len(targets)} targets.\n")
+
+        for target in targets:
+            scan_target(target)
+
+        return
+
+    if args.url:
+        url = args.url
+    else:
+        url = console.input("\n[bold]Enter URL[/]: ").strip()
+
+    scan_target(url)
+
 if __name__ == "__main__":
     main()
+
