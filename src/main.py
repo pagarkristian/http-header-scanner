@@ -1,5 +1,5 @@
 import time
-
+import argparse
 
 from src.scanner import scan_website
 from src.analyzer import analyze_headers
@@ -23,6 +23,29 @@ from src.display import (
     display_scan_summary,
 )
 
+def parse_arguments():
+    """
+    Parse command-line arguments.
+    """
+
+    parser = argparse.ArgumentParser(
+        prog="http-header-scanner",
+        description="Profesional HTTP Security Header Scanner"
+    )
+
+    parser.add_argument(
+        "url",
+        nargs= "?",
+        help="Target Url To Scan"
+    )
+
+    parser.add_argument(
+    "--version",
+    action="version",
+    version="HTTP Header Scanner v3.0",
+)
+
+    return parser.parse_args()
 
 def main():
     """
@@ -31,7 +54,12 @@ def main():
 
     display_banner()
 
-    url = console.input("\n[bold]Enter URL[/]: ").strip()
+    args = parse_arguments()
+
+    if args.url:
+        url = args.url
+    else:
+        url = console.input("\n[bold]Enter URL[/]: ").strip()
 
     start_time = time.perf_counter()
 
