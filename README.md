@@ -130,7 +130,7 @@ http-header-scanner/
 ├── docs/
 │   ├── architecture.md     # Module responsibilities & data flow
 │   ├── roadmap.md
-│   └── v3.4_notes.md ... v3.8_notes.md   # Per-milestone dev notes
+│   
 │
 ├── tests/
 ├── config.ini               # Auto-generated on first run
