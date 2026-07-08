@@ -128,8 +128,8 @@ http-header-scanner/
 │   └── sample_report.json
 │
 ├── docs/
-│   ├── architecture.md     # Module responsibilities & data flow
-│   ├── screenshots
+│   ├── screenshots/    # Module responsibilities & data flow
+│   ├── architecture.md
 │   
 │
 ├── tests/
@@ -330,8 +330,6 @@ See [`CHANGELOG.md`](CHANGELOG.md) for the full, detailed history.
 | Target | Status | Planned |
 | :---: | :---: | :--- |
 | **v4.0** | 🔵 Future | Concurrent batch scanning, CSP directive quality checks, historical scan comparison, CI-friendly `--fail-below` exit codes |
-
-See [`docs/roadmap.md`](docs/roadmap.md) for the full list of ideas.
 
 ---
 
