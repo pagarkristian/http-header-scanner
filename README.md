@@ -8,6 +8,10 @@
   <img src="https://img.shields.io/badge/Headers%20Checked-10-8B5CF6?style=for-the-badge" alt="Headers Checked">
 </div>
 
+<div align="center">
+  <img src="docs/screenshots/html-report.png" alt="HTTP Header Scanner HTML report preview" width="700">
+</div>
+
 **HTTP Header Scanner** is a Python-based Command Line Interface (CLI) tool that scans a
 website's HTTP response and assesses its security posture — checking modern security
 headers, cookie security attributes, and producing a weighted 0–100 score with a
@@ -333,13 +337,12 @@ See [`docs/roadmap.md`](docs/roadmap.md) for the full list of ideas.
 
 ## 📸 Screenshots
 
-> Add your own screenshots here after running a scan — see
-> [`docs/screenshots/README.md`](docs/screenshots/README.md) for exact steps.
+| CLI Output | HTML Report |
+| :---: | :---: |
+| ![CLI output — security header analysis table and score](docs/screenshots/cli-output.png) | ![HTML report — score gauge and header summary](docs/screenshots/html-report.png) |
 
-| Preview | Screenshot | Status |
-| :--- | :---: | :---: |
-| 🖥️ **CLI Output** | _add screenshot_ | ⬜ Pending |
-| 🌐 **HTML Report** | _add screenshot_ | ⬜ Pending |
+See [`docs/screenshots/README.md`](docs/screenshots/README.md) if you want to regenerate
+these from your own scan.
 
 ---
 
