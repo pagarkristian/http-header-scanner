@@ -33,19 +33,21 @@ def load_targets(filename):
 
     return targets
 
-def create_report_directory(url):
+def create_report_directory(url, reports_dir="reports"):
     """
     Create a report directory for a target.
 
     Args:
         url (str): Target URL.
+        reports_dir (str): Base folder to store reports in, read from
+            config.ini.
 
     Returns:
         pathlib.Path: Report directory path.
     """
 
     domain = urlparse(url).netloc
-    report_dir = Path("reports") / domain
+    report_dir = Path(reports_dir) / domain
     report_dir.mkdir(
         parents=True,
         exist_ok=True,

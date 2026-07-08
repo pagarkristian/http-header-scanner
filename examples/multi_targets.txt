@@ -1,4 +1,5 @@
 https://google.com
-https://github.com
-https://openai.com
-https://cloudflare.com
+https://youtube.com
+https://purgatorie.pythonanywhere.com/
+https://chatgpt.com/
+https://web.whatsapp.com/

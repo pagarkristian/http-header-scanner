@@ -200,6 +200,37 @@ def display_scan_error(url):
     )
 
 
+def display_unexpected_error(url, error):
+    """
+    Display an error panel for an unexpected exception (not a plain
+    connection failure), so the user sees a clean message instead of a
+    raw Python traceback. The full traceback still goes to the log file.
+
+    Args:
+        url (str): Target URL being scanned when the error happened.
+        error (Exception): The exception that was raised.
+    """
+
+    message = Text()
+    message.append("An unexpected error happened while scanning ")
+    message.append(url, style="bold")
+    message.append(".\n\n")
+    message.append(f"{type(error).__name__}: {error}\n", style=DANGER)
+    message.append("Details were written to logs/scanner.log", style=MUTED)
+
+    console.print()
+    console.print(
+        Panel(
+            message,
+            title="[bold]Unexpected Error[/]",
+            title_align="left",
+            border_style=DANGER,
+            box=ROUNDED,
+            padding=(1, 2),
+        )
+    )
+
+
 # ---------------------------------------------------------------------------
 # Response headers
 # ---------------------------------------------------------------------------
@@ -310,8 +341,77 @@ def display_security_analysis(analysis):
 
 
 # ---------------------------------------------------------------------------
-# Security score
+# Cookie analysis
 # ---------------------------------------------------------------------------
+
+COOKIE_STATUS_STYLE = {
+    "Secure": (SUCCESS, "\u2713"),
+    "Needs Attention": (DANGER, "\u2717"),
+}
+
+
+def display_cookie_analysis(cookies):
+    """
+    Display the cookie security analysis.
+
+    Args:
+        cookies (list[dict]): Cookie analysis results from
+            cookie_analyzer.analyze_cookies().
+    """
+
+    console.print()
+
+    if not cookies:
+        console.print(
+            Panel(
+                "This response did not set any cookies.",
+                title="[bold]Cookie Security Analysis[/]",
+                title_align="left",
+                border_style=DIM_BORDER,
+                box=ROUNDED,
+                padding=(1, 2),
+            )
+        )
+        return
+
+    table = Table(
+        title="Cookie Security Analysis",
+        title_style=f"bold {BRAND}",
+        title_justify="left",
+        box=SIMPLE_HEAVY,
+        border_style=DIM_BORDER,
+        header_style=f"bold {BRAND}",
+        padding=(0, 1),
+        expand=True,
+        show_lines=True,
+    )
+
+    table.add_column("", width=2, justify="center")
+    table.add_column("Cookie", style="bold white", ratio=2, no_wrap=True)
+    table.add_column("Secure", ratio=1, justify="center")
+    table.add_column("HttpOnly", ratio=1, justify="center")
+    table.add_column("SameSite", ratio=1, justify="center")
+    table.add_column("Issues", ratio=4)
+
+    for cookie in cookies:
+        color, symbol = COOKIE_STATUS_STYLE.get(cookie["status"], (DANGER, "?"))
+
+        issues_text = (
+            "\n".join(cookie["issues"])
+            if cookie["issues"]
+            else "None"
+        )
+
+        table.add_row(
+            Text(symbol, style=f"bold {color}"),
+            Text(cookie["name"]),
+            Text("Yes" if cookie["secure"] else "No", style=SUCCESS if cookie["secure"] else DANGER),
+            Text("Yes" if cookie["httponly"] else "No", style=SUCCESS if cookie["httponly"] else DANGER),
+            Text(cookie["samesite"] or "Not set", style=MUTED if cookie["samesite"] else DANGER),
+            Text(issues_text, style=MUTED),
+        )
+
+    console.print(table)
 
 def display_security_score(score, risk_level):
     """

@@ -10,6 +10,7 @@ def export_to_json(
     score,
     risk_level,
     scan_duration,
+    cookies,
 ):
     """
     Export scan results to a JSON file.
@@ -21,6 +22,9 @@ def export_to_json(
         analysis (dict): Security analysis results.
         score (int): Security score.
         risk_level (str): Overall risk level.
+        scan_duration (float): Scan duration in seconds.
+        cookies (list[dict]): Cookie analysis results from
+            cookie_analyzer.analyze_cookies().
     """
 
     timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
@@ -40,9 +44,12 @@ def export_to_json(
         elif info["status"] == "Report Only":
             report_only_count += 1
 
+    cookies_secure_count = sum(1 for cookie in cookies if cookie["status"] == "Secure")
+    cookies_needs_attention_count = len(cookies) - cookies_secure_count
+
     report = {
         "scanner": "HTTP Header Scanner",
-        "version": "1.10",
+        "version": "3.8",
         "timestamp": timestamp,
         "scan_duration": scan_duration,
         "target": target,
@@ -58,6 +65,13 @@ def export_to_json(
         },
 
         "analysis": analysis,
+
+        "cookies": cookies,
+        "cookie_summary": {
+            "total": len(cookies),
+            "secure": cookies_secure_count,
+            "needs_attention": cookies_needs_attention_count,
+        },
     }
 
     with open(filename, "w", encoding="utf-8") as file:

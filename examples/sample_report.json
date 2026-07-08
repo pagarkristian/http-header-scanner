@@ -1,0 +1,100 @@
+{
+    "scanner": "HTTP Header Scanner",
+    "version": "3.8",
+    "timestamp": "2026-07-07 23:20:56",
+    "scan_duration": 0.87,
+    "target": "https://example.com",
+    "final_url": "https://example.com/",
+    "status_code": 200,
+    "score": 73,
+    "risk_level": "Medium",
+    "summary": {
+        "present": 5,
+        "missing": 5,
+        "report_only": 0
+    },
+    "analysis": {
+        "Content-Security-Policy": {
+            "present": true,
+            "status": "Present",
+            "value": "default-src 'self'; script-src 'self'"
+        },
+        "Strict-Transport-Security": {
+            "present": true,
+            "status": "Present",
+            "value": "max-age=63072000; includeSubDomains; preload"
+        },
+        "X-Frame-Options": {
+            "present": false,
+            "status": "Missing",
+            "value": "N/A"
+        },
+        "X-Content-Type-Options": {
+            "present": true,
+            "status": "Present",
+            "value": "nosniff"
+        },
+        "Referrer-Policy": {
+            "present": true,
+            "status": "Present",
+            "value": "strict-origin-when-cross-origin"
+        },
+        "Permissions-Policy": {
+            "present": true,
+            "status": "Present",
+            "value": "geolocation=(), camera=()"
+        },
+        "Cross-Origin-Opener-Policy": {
+            "present": false,
+            "status": "Missing",
+            "value": "N/A"
+        },
+        "Cross-Origin-Embedder-Policy": {
+            "present": false,
+            "status": "Missing",
+            "value": "N/A"
+        },
+        "Cross-Origin-Resource-Policy": {
+            "present": false,
+            "status": "Missing",
+            "value": "N/A"
+        },
+        "X-Permitted-Cross-Domain-Policies": {
+            "present": false,
+            "status": "Missing",
+            "value": "N/A"
+        }
+    },
+    "cookies": [
+        {
+            "name": "session_id",
+            "secure": true,
+            "httponly": true,
+            "samesite": "Strict",
+            "has_expiry": true,
+            "raw": "session_id=8f3ac91e2b; Secure; HttpOnly; SameSite=Strict; Max-Age=3600",
+            "issues": [],
+            "status": "Secure"
+        },
+        {
+            "name": "analytics_id",
+            "secure": false,
+            "httponly": false,
+            "samesite": null,
+            "has_expiry": false,
+            "raw": "analytics_id=an-9931; Path=/",
+            "issues": [
+                "Missing Secure flag (cookie can be sent over plain HTTP).",
+                "Missing HttpOnly flag (cookie is readable by JavaScript).",
+                "Missing SameSite attribute (no CSRF protection).",
+                "No expiry set (session cookie \u2014 acceptable, but confirm this is intended)."
+            ],
+            "status": "Needs Attention"
+        }
+    ],
+    "cookie_summary": {
+        "total": 2,
+        "secure": 1,
+        "needs_attention": 1
+    }
+}

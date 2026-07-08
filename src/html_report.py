@@ -10,6 +10,11 @@ STATUS_CLASS = {
     "Report Only": "report-only",
 }
 
+COOKIE_STATUS_CLASS = {
+    "Secure": "present",
+    "Needs Attention": "missing",
+}
+
 GRADE_BY_RISK = {
     "Low": "A",
     "Medium": "B",
@@ -143,6 +148,44 @@ def _build_header_table(analysis):
                             <td class="header-name">{_esc(header)}</td>
                             <td><span class="status-tag status-{status_class}">{_esc(info["status"])}</span></td>
                             <td class="header-value">{_render_value_cell(info["value"])}</td>
+                        </tr>
+"""
+
+    return rows
+
+
+def _build_cookie_table(cookies):
+    """
+    Build the cookie security analysis table rows.
+
+    Args:
+        cookies (list[dict]): Cookie analysis results from
+            cookie_analyzer.analyze_cookies().
+
+    Returns:
+        str: HTML table rows.
+    """
+
+    if not cookies:
+        return (
+            '                        <tr class="row-empty">'
+            '<td colspan="5" class="table-empty">'
+            "This response did not set any cookies."
+            "</td></tr>\n"
+        )
+
+    rows = ""
+
+    for cookie in cookies:
+        status_class = COOKIE_STATUS_CLASS.get(cookie["status"], "missing")
+        issues = "; ".join(cookie["issues"]) if cookie["issues"] else "None"
+
+        rows += f"""                        <tr class="row-{status_class}">
+                            <td class="header-name">{_esc(cookie["name"])}</td>
+                            <td><span class="status-tag status-{status_class}">{_esc(cookie["status"])}</span></td>
+                            <td>{"Yes" if cookie["secure"] else "No"}</td>
+                            <td>{"Yes" if cookie["httponly"] else "No"}</td>
+                            <td class="header-value">{_esc(cookie["samesite"] or "Not set")} &mdash; {_esc(issues)}</td>
                         </tr>
 """
 
@@ -344,6 +387,11 @@ def generate_html_report(json_file, html_file):
     html_out = html_out.replace(
         "{{HEADER_TABLE}}",
         _build_header_table(report["analysis"]),
+    )
+
+    html_out = html_out.replace(
+        "{{COOKIE_TABLE}}",
+        _build_cookie_table(report.get("cookies", [])),
     )
 
     html_out = html_out.replace(

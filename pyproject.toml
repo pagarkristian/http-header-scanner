@@ -1,0 +1,30 @@
+[project]
+name = "http-header-scanner"
+version = "3.8.0"
+description = "A Python-based tool for analyzing HTTP security headers and cookie security, and assessing website security posture."
+readme = "README.md"
+requires-python = ">=3.9"
+license = { text = "MIT" }
+authors = [
+    { name = "Pagar" },
+]
+keywords = ["security", "http-headers", "cybersecurity", "cli", "scanner"]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Environment :: Console",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Topic :: Security",
+]
+dependencies = [
+    "requests",
+    "rich",
+]
+
+[project.scripts]
+http-header-scanner = "src.main:main"
+
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
