@@ -9,7 +9,7 @@
 </div>
 
 <div align="center">
-  <img src="docs/screenshots/html-report.png" alt="HTTP Header Scanner HTML report preview" width="700">
+  <img src="docs/screenshots/html-report.png" alt="HTTP Header Scanner HTML report preview" width="800">
 </div>
 
 **HTTP Header Scanner** is a Python-based Command Line Interface (CLI) tool that scans a
