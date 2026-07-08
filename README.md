@@ -339,8 +339,6 @@ See [`CHANGELOG.md`](CHANGELOG.md) for the full, detailed history.
 | :---: | :---: |
 | ![CLI output — security header analysis table and score](docs/screenshots/cli-output.png) | ![HTML report — score gauge and header summary](docs/screenshots/html-report.png) |
 
-See [`docs/screenshots/README.md`](docs/screenshots/README.md) if you want to regenerate
-these from your own scan.
 
 ---
 
