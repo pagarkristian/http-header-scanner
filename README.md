@@ -129,7 +129,7 @@ http-header-scanner/
 │
 ├── docs/
 │   ├── architecture.md     # Module responsibilities & data flow
-│   ├── roadmap.md
+│   ├── screnshoot
 │   
 │
 ├── tests/
